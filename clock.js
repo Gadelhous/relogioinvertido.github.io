@@ -147,7 +147,7 @@ function setFont(size) {
  * @return {point} a 2D point.
  */
 function polar2Cartesian(radius, angle) {
-  angle -= pi / 2;
+  angle += pi / 2;
   return {
     x: radius * Math.cos(angle),
     y: radius * Math.sin(angle),
@@ -394,7 +394,11 @@ function drawClock(place) {
   context.font = setFont(clockRadius / 10);
   drawClock.romans.map((n, i) => {
     context.fillStyle = n.c;
-    var coord = polar2Cartesian(0.85 * clockRadius, i * fiveMin);
+    //var angle = 90 - (i * fiveMin);
+    var angle = 360 - ((i - 2.45) * fiveMin) % 360;
+    // Calculate the coordinates using polar2Cartesian function
+    var coord = polar2Cartesian(0.85 * clockRadius, angle);
+    //var coord = polar2Cartesian(0.85 * clockRadius, i * fiveMin);
     // translate to the center of the canvas
     coord = translate(coord, center);
     context.fillText(n.txt, coord.x, coord.y);
@@ -404,8 +408,10 @@ function drawClock(place) {
   context.font = setFont(clockRadius / 20);
   drawClock.decimals.map((n, i) => {
     context.fillStyle = n.c;
+    var angle2 = ( 360 - ((i + 3.55) * fiveMin) % 360 ) * 0.5;
+    // i * fiveMin * 0.5
     // runs at half the speed
-    var coord = polar2Cartesian(1.01 * clockRadius, i * fiveMin * 0.5);
+    var coord = polar2Cartesian(1.01 * clockRadius, angle2);
     // translate to the center of the canvas
     coord = translate(coord, center);
     context.fillText(n.txt, coord.x, coord.y);
